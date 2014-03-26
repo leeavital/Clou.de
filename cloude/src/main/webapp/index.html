@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>ClouDe</title>
+    <script src="node_modules/angular/lib/angular.min.js"></script>
+    <script>
+      var ClouDe = angular.module( 'ClouDe', [] );
+      console.log( ClouDe );
+
+      var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', function( $scope, $http ){
+
+          $scope.getSourceFiles = function(){
+            $http.get( '/files' ).then( function(response) {
+               $scope.sourceFiles = response.data;
+            });
+          }
+
+
+          $scope.openFile = function( file ){
+            $http.get( '/file/' + file ).then( function(response){
+              $scope.sourceFile = response.data;
+            });
+          }
+
+
+          $scope.save = function(){
+            $http.post( '/file', $scope.sourceFile );
+          }
+
+          $scope.getSourceFiles()
+
+
+          console.log( 'hello world' );
+
+      }]);
+
+
+      console.log( Ctl );
+
+
+    </script>
+
+  </head>
+  <body ng-app="ClouDe" ng-controller="Ctl">
+    <ul>
+      <li ng-repeat="sf in sourceFiles">
+          <a ng-click="openFile( sf )">{{sf}}</a>
+      </li>
+    </ul>
+
+
+    <div>
+      <textarea ng-blur="save()" ng-model="sourceFile.source" ></textarea>
+    </div>
+  </body>
+
+</html>
