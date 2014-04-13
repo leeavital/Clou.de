@@ -53,7 +53,7 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
     }
   }
 
-  // save a file -- takes a SourceF.ile
+  // save a file -- takes a SourceFile
   post( "/file" ) {
     val file = parsedRequestBody.extract[SourceFile]
     DevEnvironment saveFile( file )
@@ -82,6 +82,12 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
   get( "/files" ){
     val ws = new java.io.File( "workspace" )
     (ws.list) toList
+  }
+
+
+  get( "/compile" ){
+
+    "compile is unimplemented"
   }
 
 }
