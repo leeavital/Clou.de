@@ -9,9 +9,11 @@
 
       var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', function( $scope, $http ){
 
-          $scope.getSourceFiles = function(){
+          $scope.getSourceFiles = function( cb ){
             $http.get( '/files' ).then( function(response) {
                $scope.sourceFiles = response.data;
+
+               cb( $scope.sourceFiles);
             });
           }
 
@@ -27,10 +29,9 @@
             $http.post( '/file', $scope.sourceFile );
           }
 
-          $scope.getSourceFiles()
-
-
-          console.log( 'hello world' );
+          $scope.getSourceFiles( function( files ){
+            $scope.openFile( files[0] ); 
+          });
 
       }]);
 
@@ -40,17 +41,23 @@
 
     </script>
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="css/site.css" />
 
   </head>
   <body ng-app="ClouDe" ng-controller="Ctl">
-    <ul>
+    <div class="action-bar">
+
+    </div>
+
+    <br class="clear" />
+    <ul class="source-file-listing">
       <li ng-repeat="sf in sourceFiles">
           <a ng-click="openFile( sf )">{{sf}}</a>
       </li>
     </ul>
 
 
-    <div>
+    <div class="editor-area">
       <textarea ng-blur="save()" ng-model="sourceFile.source" ></textarea>
     </div>
   </body>
