@@ -1,4 +1,4 @@
-var ClouDe = angular.module( 'ClouDe', [] );
+var ClouDe = angular.module( 'ClouDe', [ 'ui.bootstrap'] );
 console.log( ClouDe );
 
 var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', function( $scope, $http ){
@@ -25,7 +25,7 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', function( $scope, $http
 
     $scope.getSourceFiles( function( files ){
         $scope.openFile( files[0] ); 
-        });
+    });
 
 }]);
 

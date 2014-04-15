@@ -9,6 +9,7 @@
   "author": "Lee Avital",
   "license": "MIT",
   "dependencies": {
-    "angular": "~1.2.15"
+    "angular": "~1.2.15",
+    "angular-bootstrap": "0.0.4"
   }
 }
