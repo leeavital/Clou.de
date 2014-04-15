@@ -37,7 +37,7 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
             // TODO better default stuff
             var sf = {
               name: filename + '.java',
-              source: 'public class ' + filename + ' {} ' 
+              source: 'public class ' + filename + ' {} '
             }
             $http.post( '/file', sf );
           }
