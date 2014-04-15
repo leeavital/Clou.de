@@ -20,7 +20,6 @@ import scala.util.{Try, Success, Failure}
 case class SourceFile( name : String, source : String );
 
 
-
 object DevEnvironment{
 
   def saveFile ( f : SourceFile ) = {
@@ -59,7 +58,7 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
     DevEnvironment saveFile( file )
     println ( request.body )
     println( file )
-    "ok"
+    file
   }
 
   // get the contents of a file -- returns a source file

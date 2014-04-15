@@ -12,7 +12,7 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
     }
 
 
-    $scope.openFile = function( file ){
+    var openFile = $scope.openFile = function( file ){
     $http.get( '/file/' + file ).then( function(response){
       $scope.sourceFile = response.data;
       });
@@ -32,14 +32,17 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
 
       $modal.open( {
         templateUrl: 'partials/newfile.html',
-        controller: function( $scope ){
+        controller: function( $modalInstance, $scope ){
           $scope.addClass = function( filename, type ){
             // TODO better default stuff
             var sf = {
               name: filename + '.java',
               source: 'public class ' + filename + ' {} '
             }
-            $http.post( '/file', sf );
+            $http.post( '/file', sf ).then( function( ){
+                openFile( filename + '.java' );
+                $modalInstance.close();
+            });
           }
         }
       });
