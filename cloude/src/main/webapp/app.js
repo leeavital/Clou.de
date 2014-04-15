@@ -1,7 +1,7 @@
 var ClouDe = angular.module( 'ClouDe', [ 'ui.bootstrap'] );
 console.log( ClouDe );
 
-var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', function( $scope, $http ){
+var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $scope, $http, $modal ){
 
     $scope.getSourceFiles = function( cb ){
     $http.get( '/files' ).then( function(response) {
@@ -20,12 +20,30 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', function( $scope, $http
 
 
     $scope.save = function(){
-    $http.post( '/file', $scope.sourceFile );
+      $http.post( '/file', $scope.sourceFile );
     }
 
     $scope.getSourceFiles( function( files ){
-        $scope.openFile( files[0] ); 
+        $scope.openFile( files[0] );
     });
+
+
+    $scope.openNewFileWizard = function(){
+
+      $modal.open( {
+        templateUrl: 'partials/newfile.html',
+        controller: function( $scope ){
+          $scope.addClass = function( filename, type ){
+            // TODO better default stuff
+            var sf = {
+              name: filename + '.java',
+              source: 'public class ' + filename + ' {} ' 
+            }
+            $http.post( '/file', sf );
+          }
+        }
+      });
+    }
 
 }]);
 

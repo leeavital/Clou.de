@@ -1,0 +1,14 @@
+<form class="form-horizontal" style="height: 300px; width: 200px">
+  <label>Filename 
+    <input ng-model="filename" type="text" />
+  </label>
+
+
+  <select ng-model="ftype">
+    <option ng-value="class" selected>Class</option>
+    <option ng-value="interface">Interface</option>
+  </select>
+
+  <button ng-click="addClass(filename, ftype)">Create Class</button>
+
+</form>
