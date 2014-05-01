@@ -12,6 +12,7 @@
   <body ng-app="ClouDe" ng-controller="Ctl">
     <div class="action-bar">
         <div class="btn btn-primary" ng-click="openNewFileWizard()">New File</div>
+        <div class="btn btn-primary" ng-click="build()">Build</div>
     </div>
 
     <br class="clear" />
@@ -26,5 +27,4 @@
       <textarea ng-blur="save()" ng-model="sourceFile.source" ></textarea>
     </div>
   </body>
-
 </html>

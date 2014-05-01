@@ -4,6 +4,8 @@ import org.scalatra._
 import scalate.ScalateSupport
 
 
+import javax.tools._
+
 // JSON-related libraries
 import org.json4s.{DefaultFormats, Formats}
 
@@ -17,10 +19,17 @@ import scala.util.{Try, Success, Failure}
 
 
 
+
+/**
+ * name will have the .java suffix
+ */
 case class SourceFile( name : String, source : String );
 
 
 object DevEnvironment{
+
+  val compiler = javax.tools.ToolProvider.getSystemJavaCompiler();
+
 
   def saveFile ( f : SourceFile ) = {
     val SourceFile(name, source) = f
@@ -30,6 +39,22 @@ object DevEnvironment{
     ps.print( source )
 
     ps.close
+  }
+
+
+
+  def compileFile( fname : String ) = {
+    val filepath = "workspace/" + fname
+    val compiler = ToolProvider.getSystemJavaCompiler();
+    var errStream = new ErrorStream
+    compiler.run( System.in, System.out,  errStream, filepath, "-d",  "workspace_dist" )
+    errStream.errors
+  }
+
+
+  def compileAll( ) = {
+    val compiler= ToolProvider.getSystemJavaCompiler()
+    compiler.run( System.in, System.out, System.err, "workspace/*.java", "-d",  "workspace_dist" ) 
   }
 
 
@@ -83,10 +108,15 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
     (ws.list) toList
   }
 
-
   get( "/compile" ){
+    DevEnvironment.compileAll( )
+  }
 
-    "compile is unimplemented"
+
+  post( "/compile" ){
+    val sf  : String = parsedRequestBody.extract[String];
+    DevEnvironment.compileFile( sf  )
+    sf
   }
 
 }
