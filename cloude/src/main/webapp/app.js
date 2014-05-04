@@ -1,4 +1,4 @@
-var ClouDe = angular.module( 'ClouDe', [ 'ui.bootstrap'] );
+var ClouDe = angular.module( 'ClouDe', [ 'ui.bootstrap', 'ui.bootstrap.tabs'] );
 console.log( ClouDe );
 
 var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $scope, $http, $modal ){
@@ -52,8 +52,11 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
 
 
     $scope.build = function(){
-        $http.post( '/compile', JSON.stringify( $scope.sourceFile.name )  );
-        // $http.get( '/compile' );
+        $http.post( '/compile', JSON.stringify( $scope.sourceFile.name )  ).then( function( response ){
+          $scope.compileErrors = response.data
+
+
+        });
     }
 
 

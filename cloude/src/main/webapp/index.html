@@ -14,6 +14,7 @@
         <div class="btn btn-primary" ng-click="openNewFileWizard()">New File</div>
         <div class="btn btn-primary" ng-click="build()">Build</div>
     </div>
+    
 
     <br class="clear" />
     <ul class="source-file-listing">
@@ -25,6 +26,15 @@
 
     <div class="editor-area">
       <textarea ng-blur="save()" ng-model="sourceFile.source" ></textarea>
+      <div class="error-stream">
+        <tabset>
+          <tab heading="Errors">
+            <li ng-repeat="err in compileErrors">
+              {{err.message}} at line {{err.line}}
+            </li> 
+          </tab>
+        </tabset>
+      </div>
     </div>
   </body>
 </html>
