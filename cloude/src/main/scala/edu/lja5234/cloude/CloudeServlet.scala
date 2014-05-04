@@ -26,10 +26,15 @@ import scala.util.{Try, Success, Failure}
 case class SourceFile( name : String, source : String );
 
 
+/**
+ * main: the name of the main class
+ * args: a list of arguments to pass to the command line
+ */
+case class RunConfig( main: String, args: List[String] );
+
 object DevEnvironment{
 
   val compiler = javax.tools.ToolProvider.getSystemJavaCompiler();
-
 
   def saveFile ( f : SourceFile ) = {
     val SourceFile(name, source) = f
@@ -110,6 +115,11 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
 
   get( "/compile" ){
     DevEnvironment.compileAll( )
+  }
+
+
+  post( "/run" ) {
+    val runConfig : RunConfig = parsedRequestBody.extract[RunConfig]
   }
 
 
