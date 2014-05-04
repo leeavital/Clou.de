@@ -32,6 +32,10 @@ case class SourceFile( name : String, source : String );
  */
 case class RunConfig( main: String, args: List[String] );
 
+
+/**
+ * Singleton :(
+ */
 object DevEnvironment{
 
   val compiler = javax.tools.ToolProvider.getSystemJavaCompiler();
@@ -49,6 +53,7 @@ object DevEnvironment{
 
 
   def compileFile( fname : String ) = {
+    println ("Compiling" )
     val filepath = "workspace/" + fname
     val compiler = ToolProvider.getSystemJavaCompiler();
     var errStream = new ErrorStream
@@ -59,7 +64,12 @@ object DevEnvironment{
 
   def compileAll( ) = {
     val compiler= ToolProvider.getSystemJavaCompiler()
-    compiler.run( System.in, System.out, System.err, "workspace/*.java", "-d",  "workspace_dist" ) 
+    compiler.run( System.in, System.out, System.err, "workspace/*.java", "-d",  "workspace_dist" )
+  }
+
+
+  def run (r : RunConfig ) = {
+    "run( RunConfig ) is not implemented"
   }
 
 
@@ -120,13 +130,17 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
 
   post( "/run" ) {
     val runConfig : RunConfig = parsedRequestBody.extract[RunConfig]
+    DevEnvironment.run( runConfig )
   }
 
 
   post( "/compile" ){
     val sf  : String = parsedRequestBody.extract[String];
-    DevEnvironment.compileFile( sf  )
-    sf
-  }
+    val errors = DevEnvironment.compileFile( sf  )
 
+    for( e <- errors ){
+      println( e )
+    }
+    errors
+  }
 }
