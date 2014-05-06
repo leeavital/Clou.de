@@ -1,0 +1,17 @@
+{
+  "name": "webapp",
+  "version": "0.0.0",
+  "homepage": "https://github.com/leeavital/Clou.de",
+  "authors": [
+    "Lee Avital <leeavital@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
