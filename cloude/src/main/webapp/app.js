@@ -1,4 +1,4 @@
-var ClouDe = angular.module( 'ClouDe', [ 'ui.bootstrap', 'ui.bootstrap.tabs'] );
+var ClouDe = angular.module( 'ClouDe', [ 'ui.bootstrap', 'ui.bootstrap.tabs', 'ui.ace'] );
 console.log( ClouDe );
 
 var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $scope, $http, $modal ){
@@ -21,6 +21,12 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
 
     $scope.save = function(){
       $http.post( '/file', $scope.sourceFile );
+    }
+
+
+    $scope.run = function(){
+
+      $http.post( '/run', {main: "Main", args: []} );
     }
 
     $scope.getSourceFiles( function( files ){

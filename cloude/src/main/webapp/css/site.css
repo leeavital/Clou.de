@@ -24,7 +24,7 @@ html, body {
   float: left;
   display: inline;
   height: 90%; }
-  .editor-area textarea {
+  .editor-area .editor {
     width: 100%;
     height: 80%; }
   .editor-area .error-stream {

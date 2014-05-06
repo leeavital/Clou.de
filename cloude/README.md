@@ -1,5 +1,14 @@
 # ClouDe #
 
+## Install
+Install javascript components (requires bower *and* npm)
+
+```sh
+$ cd src/main/webapp/
+$ bower install
+$ nmp install
+```
+
 ## Build & Run ##
 
 ```sh

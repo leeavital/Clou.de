@@ -4,6 +4,9 @@
     <title>ClouDe</title>
     <script src="node_modules/angular/lib/angular.min.js"></script>
     <script src="node_modules/angular-bootstrap/ui-bootstrap.js"></script>
+
+     <script src="bower_components/angular-ui-ace/ui-ace.min.js"></script>
+    <script src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
     <script type="text/javascript" src="app.js"> </script>
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="css/site.css" />
@@ -13,8 +16,9 @@
     <div class="action-bar">
         <div class="btn btn-primary" ng-click="openNewFileWizard()">New File</div>
         <div class="btn btn-primary" ng-click="build()">Build</div>
+        <div class="btn btn-primary" ng-click="run()">Run</div>
     </div>
-    
+
 
     <br class="clear" />
     <ul class="source-file-listing">
@@ -25,7 +29,10 @@
 
 
     <div class="editor-area">
-      <textarea ng-blur="save()" ng-model="sourceFile.source" ></textarea>
+      <!--<textarea ui-ace ng-blur="save()" ng-model="sourceFile.source" ></textarea>-->
+      <div class="editor" ui-ace="{onBlur: save, mode: 'java'}" ng-model="sourceFile.source">
+      </div>
+
       <div class="error-stream">
         <tabset>
           <tab heading="Errors">
