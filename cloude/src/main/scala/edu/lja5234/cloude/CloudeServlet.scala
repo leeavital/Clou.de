@@ -45,7 +45,6 @@ object DevEnvironment{
 
     val ofile = new java.io.File( "workspace/" + name )
     val ps = new java.io.PrintWriter( ofile )
-    ps.print( source )
 
     ps.close
   }
@@ -53,7 +52,6 @@ object DevEnvironment{
 
 
   def compileFile( fname : String ) = {
-    println ("Compiling" )
     val filepath = "workspace/" + fname
     val compiler = ToolProvider.getSystemJavaCompiler();
     var errStream = new ErrorStream
@@ -69,7 +67,27 @@ object DevEnvironment{
 
 
   def run (r : RunConfig ) = {
-    "run( RunConfig ) is not implemented"
+
+    // swap out error streams -- this is really gross, I should probably subclass PrintStream
+    val sysout = System.out
+    val syserr = System.err
+    val ss = new SimpleStream 
+    val mockout = new java.io.PrintStream(  ss )
+    System.setOut( mockout )
+    System.setErr( mockout )
+
+    // load the classes
+    val classpath = Array( new java.io.File( "workspace_dist" ).toURL )
+    val classloader = new java.net.URLClassLoader( classpath );
+
+    // load the main class and run the main method with the given args
+    val main = classloader.loadClass( r.main );
+    main.newInstance.asInstanceOf[{def main(args : Array[String] ) : Unit }].main( r.args.toArray );
+
+    System.setOut( sysout )
+    System.setErr( syserr )
+
+    ss.getContents
   }
 
 
@@ -96,8 +114,6 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
   post( "/file" ) {
     val file = parsedRequestBody.extract[SourceFile]
     DevEnvironment saveFile( file )
-    println ( request.body )
-    println( file )
     file
   }
 
@@ -138,9 +154,6 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
     val sf  : String = parsedRequestBody.extract[String];
     val errors = DevEnvironment.compileFile( sf  )
 
-    for( e <- errors ){
-      println( e )
-    }
     errors
   }
 }

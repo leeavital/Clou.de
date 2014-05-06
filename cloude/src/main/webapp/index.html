@@ -35,10 +35,14 @@
 
       <div class="error-stream">
         <tabset>
-          <tab heading="Errors">
+          <tab heading="Errors" xng-focus="compileErrors">
             <li ng-repeat="err in compileErrors">
               {{err.message}} at line {{err.line}}
-            </li> 
+            </li>
+          </tab>
+
+          <tab heading="Output" xng-focus="last_run_output">
+              {{last_run_output}}
           </tab>
         </tabset>
       </div>

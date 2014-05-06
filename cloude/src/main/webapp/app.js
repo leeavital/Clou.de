@@ -1,6 +1,16 @@
 var ClouDe = angular.module( 'ClouDe', [ 'ui.bootstrap', 'ui.bootstrap.tabs', 'ui.ace'] );
 console.log( ClouDe );
 
+
+// http://stackoverflow.com/questions/14076783/angularjs-focusing-a-input-element-when-a-checkbox-is-clicked
+// ClouDe.directive('xngFocus', function() {
+//   return function(scope, element, attrs) {
+//     scope.$watch(attrs.xngFocus,  function (newValue) {
+//       newValue && element.focus();
+//     },true);
+//   };
+// });
+
 var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $scope, $http, $modal ){
 
     $scope.getSourceFiles = function( cb ){
@@ -26,7 +36,9 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
 
     $scope.run = function(){
 
-      $http.post( '/run', {main: "Main", args: []} );
+      $http.post( '/run', {main: "Main", args: []} ).then( function (response) {
+        $scope.last_run_output = response.data;
+      });
     }
 
     $scope.getSourceFiles( function( files ){
