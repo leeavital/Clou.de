@@ -30,15 +30,18 @@
 
     <div class="editor-area">
       <!--<textarea ui-ace ng-blur="save()" ng-model="sourceFile.source" ></textarea>-->
-      <div class="editor" ui-ace="{onBlur: save, mode: 'java'}" ng-model="sourceFile.source">
+      <div class="editor" ui-ace="{  mode: 'java'}" ng-model="sourceFile.source">
       </div>
 
       <div class="error-stream">
         <tabset>
           <tab heading="Errors" xng-focus="compileErrors">
             <li ng-repeat="err in compileErrors">
-              {{err.message}} at line {{err.line}}
+              {{err.message}} at line {{err.line}} in
+              <a ng-click="openFile( err.file )">{{err.file}}</a>
             </li>
+
+            <div ng-if="compileErrors == []">No errors</div>
           </tab>
 
           <tab heading="Output" xng-focus="last_run_output">
