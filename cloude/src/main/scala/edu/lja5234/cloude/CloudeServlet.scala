@@ -50,13 +50,12 @@ object DevEnvironment{
     (new JFile( pre )).mkdirs()
 
     val ofile = new JFile( pre + filename )
-    println( ofile )
 
     val ps = new java.io.PrintWriter( ofile )
+    ps.print( f.source )
 
-    ps.println( f.source )
+
     ps.close
-    println( "wrote to " + f.name )
   }
 
   def deleteFile( file :String ) = {
@@ -85,7 +84,6 @@ object DevEnvironment{
 
 
     val javaFiles = DevEnvironment.files.map( x => new JFile( "workspace/" + x ) )
-    println( javaFiles )
 
     val compiler = ToolProvider.getSystemJavaCompiler();
     //note that the "compiler" may be null if your environment path is not set correctly
