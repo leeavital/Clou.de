@@ -45,9 +45,6 @@ object DevEnvironment{
     val pattern = """(.*/)([^\.]*\.java)""".r
     val pattern( pre, filename ) = localuri
 
-    println( pre )
-    println( filename )
-    println( f )
 
     // create the directories
     (new JFile( pre )).mkdirs()
