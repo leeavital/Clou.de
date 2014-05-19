@@ -70,10 +70,10 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
 
 
     $scope.build = function(){
-        $http.post( '/compile', JSON.stringify( $scope.sourceFile.name )  ).then( function( response ){
-          $scope.compileErrors = response.data
-
-
+        $http.post( '/file', $scope.sourceFile ).then( function(){
+          $http.get( '/compile' ).then( function( response ){
+            $scope.compileErrors = response.data
+          });
         });
     }
 
@@ -83,5 +83,3 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
 
 
 console.log( Ctl );
-
-
