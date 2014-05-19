@@ -9,6 +9,8 @@ import javax.tools._
 // JSON-related libraries
 import org.json4s.{DefaultFormats, Formats}
 
+
+
 // JSON handling support from Scalatra
 import org.scalatra.json._
 
@@ -28,7 +30,10 @@ case class SourceFile( name : String, source : String );
  * main: the name of the main class
  * args: a list of arguments to pass to the command line
  */
-case class RunConfig( main: String, args: List[String] );
+case class RunConfig( main: String, args: String );
+
+
+case class Configuration( name: String, runs : List[RunConfig] )
 
 
 /**
@@ -37,6 +42,9 @@ case class RunConfig( main: String, args: List[String] );
 object DevEnvironment{
 
   val compiler = javax.tools.ToolProvider.getSystemJavaCompiler();
+
+  var configuration = Configuration( "FOOBAR12", List( RunConfig("Main", "" )) )
+
 
   def saveFile ( f : SourceFile ) = {
     val SourceFile(name, source) = f
@@ -80,7 +88,6 @@ object DevEnvironment{
 
   def compileAll( ) = {
 
-
     val javaFiles = DevEnvironment.files.map( x => new JFile( "workspace/" + x ) )
 
     val compiler = ToolProvider.getSystemJavaCompiler();
@@ -108,6 +115,7 @@ object DevEnvironment{
 
 
   def run (r : RunConfig ) : String = {
+    println( r )
     // swap out error streams -- this is really gross, I should probably subclass PrintStream
     val sysout = System.out
     val syserr = System.err
@@ -120,14 +128,17 @@ object DevEnvironment{
     val classpath = Array( new java.io.File( "workspace_dist" ).toURL )
     val classloader = new java.net.URLClassLoader( classpath );
 
+    val args : Array[String] = """\s+""".r.split( r.args )
 
     // load the main class and run the main method with the given args
     val main = classloader.loadClass( r.main );
-    main.newInstance.asInstanceOf[{def main(args : Array[String] ) : Unit }].main( r.args.toArray );
+    main.newInstance.asInstanceOf[{def main(args : Array[String] ) : Unit }].main( args );
 
 
     System.setOut( sysout )
     System.setErr( syserr )
+
+    sysout.println( "Done" )
 
 
     ss.getContents
@@ -217,5 +228,18 @@ class CloudeServlet extends CloudeStack with JacksonJsonSupport{
     val errors = DevEnvironment.compileAll
 
     errors
+  }
+
+
+
+  // configuration routes
+  get("/config") {
+    DevEnvironment.configuration
+  }
+
+
+  post( "/config" ){
+    val conf = parsedRequestBody.extract[Configuration]
+    DevEnvironment.configuration = conf;
   }
 }

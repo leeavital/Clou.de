@@ -35,8 +35,8 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
 
 
     $scope.run = function(){
-
-      $http.post( '/run', {main: "Main", args: []} ).then( function (response) {
+      var runconfig = $scope.currentRun;
+      $http.post( '/run', runconfig ).then( function (response) {
         $scope.last_run_output = response.data;
       });
     }
@@ -62,9 +62,33 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
                 $modalInstance.close();
             });
           }
-        }
+        },
+        size: {width: '800px'}
       });
 
+    }
+
+
+    $scope.openConfigurationWizard = function(){
+      var superscope = $scope;
+      $modal.open({
+        templateUrl: 'partials/configuration.html',
+        controller: function( $modalInstance, $scope ){
+          $scope.close =  function(){
+            $modalInstance.close();
+          }
+
+          $scope.setCurrent = function( run ){
+            $scope.currentRun = run;
+          }
+
+
+          $scope.$watch( 'configuration', function( e ) {
+            $http.post( '/config', $scope.configuration );
+          });
+        },
+        scope: $scope
+      });
     }
 
 
@@ -77,6 +101,12 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
         });
     }
 
+
+    // populate the configuration
+    $http.get( '/config' ).then ( function( response ) {
+      $scope.configuration = response.data;
+      $scope.currentRun = $scope.configuration.runs[0];
+    });
 
 
 }]);
