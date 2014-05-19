@@ -14,10 +14,10 @@ console.log( ClouDe );
 var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $scope, $http, $modal ){
 
     $scope.getSourceFiles = function( cb ){
-    $http.get( '/files' ).then( function(response) {
-      $scope.sourceFiles = response.data;
+      $http.get( '/files' ).then( function(response) {
+        $scope.sourceFiles = response.data;
 
-      cb( $scope.sourceFiles);
+        cb( $scope.sourceFiles);
       });
     }
 
@@ -47,7 +47,7 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
 
 
     $scope.openNewFileWizard = function(){
-
+      var superscope = $scope.getSourceFiles;
       $modal.open( {
         templateUrl: 'partials/newfile.html',
         controller: function( $modalInstance, $scope ){
@@ -60,6 +60,8 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
             $http.post( '/file', sf ).then( function( ){
                 openFile( filename + '.java' );
                 $modalInstance.close();
+
+                superscope.getSourceFiles( function(){} );
             });
           }
         },
@@ -107,7 +109,6 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
       $scope.configuration = response.data;
       $scope.currentRun = $scope.configuration.runs[0];
     });
-
 
 }]);
 
