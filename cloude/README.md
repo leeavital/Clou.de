@@ -1,4 +1,7 @@
 # ClouDe #
+By Lee Avital
+
+https://github.com/leeavital/Clou.de
 
 ## Install
 Install javascript components (requires bower *and* npm)
@@ -6,7 +9,7 @@ Install javascript components (requires bower *and* npm)
 ```sh
 $ cd src/main/webapp/
 $ bower install
-$ nmp install
+$ npm install
 ```
 
 ## Build & Run ##
