@@ -60,9 +60,7 @@ object DevEnvironment{
 
   def deleteFile( file :String ) = {
     (new JFile("./workspace/" + file)).delete
-
   }
-
 
 
   def compileFile( fname : String ) = {
