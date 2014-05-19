@@ -19,6 +19,7 @@ class ErrorStream  extends java.io.OutputStream {
 
 
   override def write( i : Int ) = {
+    println( "got an i")
     str += new String( Array( i.toByte ) )
   }
 
@@ -29,15 +30,15 @@ class ErrorStream  extends java.io.OutputStream {
 
 
   def errors : List[JavaCompilerError] = {
-    val errstrings = ("""\n|\r""".r).split( str )
+   println( str )
+   val errstrings = ("""\n|\r""".r).split( str )
 
    val l1 = errstrings.map { errstring =>
      val  errLine = """(.*\.java):(\d+): error: (.*)""".r
 
-
      errstring.trim match {
          case errLine( fileName : String , lineNo : String , message : String ) =>
-           Some(JavaCompilerError( Integer.parseInt( lineNo ), fileName , message ))
+           Some(JavaCompilerError( Integer.parseInt( lineNo ), fileName.replace("workspace/", "") , message ))
          case _ => None
      }
    }.toList
