@@ -94,7 +94,7 @@ var Ctl = ClouDe.controller( 'Ctl', [ '$scope', '$http', '$modal', function( $sc
     }
 
 
-
+    $scope.compileErrors = [];
     $scope.build = function(){
         $http.post( '/file', $scope.sourceFile ).then( function(){
           $http.get( '/compile' ).then( function( response ){

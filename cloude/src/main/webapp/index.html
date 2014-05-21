@@ -42,7 +42,7 @@
               <a ng-click="openFile( err.file )">{{err.file}}</a>
             </li>
 
-            <div ng-if="compileErrors == []">No errors</div>
+            <div ng-if="compileErrors.length == 0">No errors</div>
           </tab>
 
           <tab heading="Output" xng-focus="last_run_output">
