@@ -88,6 +88,8 @@ object DevEnvironment{
 
   def compileAll( ) = {
 
+    val _ = (new JFile("workspace_dist")).mkdirs()
+
     val javaFiles = DevEnvironment.files.map( x => new JFile( "workspace/" + x ) )
 
     val compiler = ToolProvider.getSystemJavaCompiler();
